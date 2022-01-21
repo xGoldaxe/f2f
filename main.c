@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:51:33 by pleveque          #+#    #+#             */
-/*   Updated: 2022/01/21 17:07:37 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/01/21 17:28:16 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ int	on_press(int keycode, t_screen *screen_data)
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_screen	screen_data;
 
+	(void)argc;
+	screen_data.map_data = parse_map(argv[1]);
+	if (!screen_data.map_data)
+		return (-1);
 	screen_data.mlx = mlx_init();
 	screen_data.win = mlx_new_window(screen_data.mlx,
 			SCREEN_WIDTH, SCREEN_HEIGHT, "fdf");

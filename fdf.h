@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:54:32 by pleveque          #+#    #+#             */
-/*   Updated: 2022/01/21 17:04:12 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/01/21 17:42:15 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include	<sys/types.h>
 # include	<sys/stat.h>
 # include	<stdarg.h>
+# include	"libft/libft.h"
 
 # define SCREEN_WIDTH 1080
 # define SCREEN_HEIGHT 1080
@@ -51,11 +52,15 @@ typedef struct s_screen {
 	void		*mlx;
 	void		*win;
 	t_img_data	img_data;
+	int			*map_data;
 }	t_screen;
 
 /* EXECUTION */
 int			render_next_frame(t_screen *screen_data);
 int			clean_exit(t_screen *screen_data);
+
+/* PARSING */
+int			*parse_map(char *filename_map);
 
 /* EVENTS */
 int			on_press(int keycode, t_screen *screen_data);
@@ -78,5 +83,6 @@ void		my_mlx_pixel_put(t_img_data *data, int x, int y, int color);
 t_coord		define_coord(t_coord *coord, int x, int y);
 int			tern(int condition, int a, int b);
 int			ft_abs(int a);
+int			ft_atoi(const char *nptr);
 
 #endif

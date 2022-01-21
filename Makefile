@@ -4,10 +4,11 @@ colors.c \
 render_next_frame.c \
 print_line.c \
 utils.c \
+parsing.c \
 
 CC = gcc
 
-HEADER = fdf.h
+HEADER = fdf.h libft/libft.h
 
 OBJ = $(SRC:%.c=./.build/%.o)
 
@@ -19,7 +20,7 @@ LIBC = ar -rc
 
 CFLAGS = -Wall -Wextra -Werror
 
-# LIBFT = @printf "\n\t\t${B_CYAN}GENERATE libft library ...\n\n${NONE}" && cd libft && make libft.a
+LIBFT = @printf "\n\t\t${B_CYAN}GENERATE libft library ...\n\n${NONE}" && cd libft && make libft.a
 
 # COLORS
 NONE			= \033[0m
@@ -38,7 +39,8 @@ all :
 	@make ${NAME}
 
 ${NAME} : $(OBJ)
-	@${CC} ${CFLAGS} -o ${NAME} ${OBJ} -L ./minilibx-linux -lmlx -lXext -lX11
+	${LIBFT}
+	@${CC} ${CFLAGS} -o ${NAME} ${OBJ} libft/libft.a -L ./minilibx-linux -lmlx -lXext -lX11
 	@printf "${B_GREEN}==>{${NAME}} LINKED SUCCESFULLY<==${NONE}\n"
 
 clean :
@@ -46,6 +48,7 @@ clean :
 	@printf "${B_RED}XX{${NAME}} CLEANED SUCCESFULLY XX${NONE}\n"
 
 fclean :	clean
+	@cd libft && make fclean
 	@${RM} ${NAME}
 	@printf "${B_RED}XX{${NAME}} FCLEAN SUCCESFULL XX${NONE}\n"
 
