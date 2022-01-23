@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:54:32 by pleveque          #+#    #+#             */
-/*   Updated: 2022/01/21 17:42:15 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/01/23 13:52:39 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,25 @@
 # include	<sys/stat.h>
 # include	<stdarg.h>
 # include	"libft/libft.h"
+# include   <math.h>
 
-# define SCREEN_WIDTH 1080
-# define SCREEN_HEIGHT 1080
+# define SCREEN_WIDTH 1000
+# define SCREEN_HEIGHT 1000
 
 //touch
 # define ESCAPE 65307
+
+typedef struct s_vec3d
+{
+    float x;
+    float y;
+    float z;
+}   t_vec3d;
+
+typedef struct s_mat4x4
+{
+    float   m[4][4];
+}   t_mat4x4;
 
 typedef struct s_img_data
 {
@@ -53,6 +66,7 @@ typedef struct s_screen {
 	void		*win;
 	t_img_data	img_data;
 	int			*map_data;
+	t_mat4x4	*mat_proj;
 }	t_screen;
 
 /* EXECUTION */
@@ -84,5 +98,10 @@ t_coord		define_coord(t_coord *coord, int x, int y);
 int			tern(int condition, int a, int b);
 int			ft_abs(int a);
 int			ft_atoi(const char *nptr);
+
+/* PROJECTION */
+t_mat4x4	*projection(t_mat4x4 *mat_proj);
+t_vec3d		*project_point(t_mat4x4 *mat_proj, t_vec3d *coord);
+t_vec3d 	*define_vec3d_coord(t_vec3d *coord, float x, float y, float z);
 
 #endif

@@ -5,6 +5,7 @@ render_next_frame.c \
 print_line.c \
 utils.c \
 parsing.c \
+projection.c \
 
 CC = gcc
 
@@ -40,7 +41,8 @@ all :
 
 ${NAME} : $(OBJ)
 	${LIBFT}
-	@${CC} ${CFLAGS} -o ${NAME} ${OBJ} libft/libft.a -L ./minilibx-linux -lmlx -lXext -lX11
+	@${CC} -o ${NAME} ${OBJ} libft/libft.a -L ./minilibx-linux -lmlx -lXext -lX11 \
+	-lm
 	@printf "${B_GREEN}==>{${NAME}} LINKED SUCCESFULLY<==${NONE}\n"
 
 clean :
