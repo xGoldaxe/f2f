@@ -6,6 +6,7 @@ print_line.c \
 utils.c \
 parsing.c \
 projection.c \
+put_square.c \
 
 CC = gcc
 

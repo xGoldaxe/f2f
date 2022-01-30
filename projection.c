@@ -45,9 +45,9 @@ void    multiply_matrix_vector(t_vec3d *in, t_vec3d *out, t_mat4x4 *mat)
 
 t_mat4x4	*projection(t_mat4x4 *mat_proj)
 {
-    float fNear = 0.3;
-    float fFar = 1000.0;
-    float fFov = 100.0;
+    float fNear = 0.5;
+    float fFar = 2000.0;
+    float fFov = 90.0;
     float fAspectRatio = 1000 / 1000;
     float fFovRad = 1.0 / tan(fFov * 0.5 / 180.0 * 3.14159);
 
@@ -79,6 +79,5 @@ t_vec3d	*project_point(t_mat4x4 *mat_proj, t_vec3d *coord)
    
     projected_coord->x *= 0.5 * 1000;
     projected_coord->y *= 0.5 * 1000;
-    printf("given a point of coords: %f %f\n", projected_coord->x, projected_coord->y);
 	return (projected_coord);
 }

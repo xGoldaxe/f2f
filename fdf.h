@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:54:32 by pleveque          #+#    #+#             */
-/*   Updated: 2022/01/23 13:52:39 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/01/30 15:32:37 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ typedef struct s_screen {
 	t_mat4x4	*mat_proj;
 }	t_screen;
 
+/* OTHERS */
+void    	multiply_matrix_vector(t_vec3d *in, t_vec3d *out, t_mat4x4 *mat);
+void  	  clean_4(t_mat4x4 *matrix);
+
 /* EXECUTION */
 int			render_next_frame(t_screen *screen_data);
 int			clean_exit(t_screen *screen_data);
@@ -87,8 +91,9 @@ int			get_b(int trgb);
 int			create_trgb(int t, int r, int g, int b);
 
 /* PUT SHAPES */
-void		print_line(t_coord coord0, t_coord coord1,
+void	print_line(t_coord coord0, t_coord coord1,
 				t_img_data *img_data, int color);
+void	clean_screen(t_screen *screen_data);
 
 /* PIXEL INTERFACE */
 void		my_mlx_pixel_put(t_img_data *data, int x, int y, int color);
