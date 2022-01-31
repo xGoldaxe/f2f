@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:13:48 by pleveque          #+#    #+#             */
-/*   Updated: 2022/01/21 18:24:27 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/01/31 18:01:07 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*read_file(char *filename)
 	return (res);
 }
 
-int	*parse_map(char *filename_map)
+void	*parse_map(char *filename_map, t_screen *screen_data)
 {
 	char	**res;
 	char	*content;
@@ -95,9 +95,15 @@ int	*parse_map(char *filename_map)
 	}
 	//to print
 	int y = 0;
+	t_vec3d	*new_vec;
+	t_list	*lst;
 	while (y < i)
 	{
-		printf("{%d}\n", ret[y]);
+		new_vec = vec3d_coord(new_vec, 0.5, y, (float)ret[y]);
+		lst = ft_lstnew(new_vec);
+		ft_lstadd_front(&screen_data->vectors, lst);
+		// new_vec = screen_data->vectors->content;
+		// printf("new vec %f, %f, %f\n",new_vec->x, new_vec->y, new_vec->z);
 		y++;
 	}
 	return (NULL);
