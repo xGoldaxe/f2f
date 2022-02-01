@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:54:32 by pleveque          #+#    #+#             */
-/*   Updated: 2022/01/31 17:47:44 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/02/01 19:47:40 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FDF_H
 
 # include	<stdio.h>
-# include	<mlx.h>
+# include	"minilibx-linux/mlx.h"
 # include	<stdlib.h>
 # include	<unistd.h>
 # include	<fcntl.h>
@@ -22,18 +22,20 @@
 # include	<sys/stat.h>
 # include	<stdarg.h>
 # include	"libft/libft.h"
-# include   <math.h>
+# include	<math.h>
 
 # define SCREEN_WIDTH 1000
 # define SCREEN_HEIGHT 1000
 
 //touch
-// # define ESCAPE 65307
-# define ESCAPE 53
-# define A_TOUCH 0
-# define D_TOUCH 2
-# define W_TOUCH 1
-# define S_TOUCH 13
+# define ESCAPE 65307
+// # define ESCAPE 53
+# define A_TOUCH 97
+# define D_TOUCH 100
+# define W_TOUCH 115
+# define S_TOUCH 119
+# define MINUS_TOUCH 65453
+# define PLUS_TOUCH 65451
 
 typedef struct s_vec3d
 {
@@ -70,7 +72,6 @@ typedef struct s_screen {
 	void		*mlx;
 	void		*win;
 	t_img_data	img_data;
-	int			*map_data;
 	t_mat4x4	*mat_proj;
 	int			fov;
 	t_mat4x4	*mat_rot_x;
@@ -78,7 +79,12 @@ typedef struct s_screen {
 	float		rotation_z;
 	float		rotation_x;
 	int			key_press;
-	t_list		*vectors;
+	t_vec3d		**vectors;
+	int			map_x;
+	int			map_y;
+	int			max_z;
+	int			min_z;
+	float			z_divisor;
 }	t_screen;
 
 /* OTHERS */
@@ -118,6 +124,7 @@ t_vec3d 	*vec3d_coord(t_vec3d *coord, float x, float y, float z);
 int			tern(int condition, int a, int b);
 int			ft_abs(int a);
 int			ft_atoi(const char *nptr);
+void		*free_split(char **entry);
 
 /* PROJECTION */
 t_mat4x4	*projection(t_mat4x4 *mat_proj, float fFov);

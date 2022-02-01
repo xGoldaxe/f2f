@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 17:13:48 by pleveque          #+#    #+#             */
-/*   Updated: 2022/01/31 18:01:07 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/02/01 19:30:11 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,39 +72,78 @@ char	*read_file(char *filename)
 void	*parse_map(char *filename_map, t_screen *screen_data)
 {
 	char	**res;
+	char	**line;
 	char	*content;
 	int		i;
 	int		*ret;
+	int		x;
+	int		y;
+	int		ret_pos;
 
 	content = read_file(filename_map);
 	if (!content)
 		return (NULL);
-	// return (tab_to_int(res));
-	res = ft_split(content, ' ');
-	i = 0;
-	while (res[i])
-		++i;
-	ret = malloc(sizeof(int *) * (i + 1));
-	if (ret == NULL)
-		return (NULL);
-	i = 0;
-	while (res[i])
+	// ========== counting =========
+	res = ft_split(content, '\n');
+	free(content);
+	y = 0;
+	while (res[y])
+		++y;
+	line = ft_split(res[0], ' ');
+	x = 0;
+	while (line[x])
+		++x;
+	screen_data->max_z = ft_atoi(line[0]);
+	screen_data->min_z = ft_atoi(line[0]);
+	ret = malloc(sizeof(int *) * (x * y));
+	//++===========
+	ret_pos = 0;
+	int	line_index = 0;
+	while (line)
 	{
-		ret[i] = ft_atoi(res[i]);
-		i++;
+		i = 0;
+		while (line[i])
+		{
+			ret[ret_pos] = ft_atoi(line[i]);
+			ret_pos++;
+			i++;
+		}
+		free_split(line);
+		line = ft_split(res[line_index], ' ');
+		line_index++;
 	}
-	//to print
-	int y = 0;
+	free_split(res);
+	screen_data->map_x = x;
+	screen_data->map_y = y;
+	//////==============
+	int actual_index = 0;
 	t_vec3d	*new_vec;
-	t_list	*lst;
-	while (y < i)
+	screen_data->vectors = malloc(sizeof (t_vec3d *) * (x * y + 1));
+	while (actual_index < (x * y))
 	{
-		new_vec = vec3d_coord(new_vec, 0.5, y, (float)ret[y]);
-		lst = ft_lstnew(new_vec);
-		ft_lstadd_front(&screen_data->vectors, lst);
-		// new_vec = screen_data->vectors->content;
-		// printf("new vec %f, %f, %f\n",new_vec->x, new_vec->y, new_vec->z);
-		y++;
+		if (ret[actual_index] > screen_data->max_z)
+			screen_data->max_z = ret[actual_index];
+		if (ret[actual_index] < screen_data->min_z)
+			screen_data->min_z = ret[actual_index];
+		actual_index++;
 	}
-	return (NULL);
+	////
+	actual_index = 0;
+	float	z_divisor;
+	if (abs(screen_data->min_z) + abs(screen_data->max_z) == 0)
+		z_divisor = 0;
+	else
+		z_divisor = -(1 / (float)(abs(screen_data->min_z) + abs(screen_data->max_z)));
+	while (actual_index < (x * y))
+	{
+		new_vec = vec3d_coord(new_vec,
+			(actual_index % x) * (1 / ((float)x - 1) * 2) -1,
+			(actual_index / x) * (1 / ((float)y - 1) * 2) -1,
+			(float)ret[actual_index] * z_divisor);
+		screen_data->vectors[actual_index] = new_vec;
+		actual_index++;
+	}
+	free(ret);
+	screen_data->vectors[actual_index] = NULL;
+	return (screen_data->vectors);
 }

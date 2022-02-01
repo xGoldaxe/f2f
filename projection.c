@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   projection.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/01 15:59:32 by pleveque          #+#    #+#             */
+/*   Updated: 2022/02/01 19:38:36 by pleveque         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
-#include <math.h>
 
 t_vec3d *define_vec3d_coord(t_vec3d *coord, float x, float y, float z)
 {
@@ -66,11 +77,10 @@ t_vec3d	*project_point(t_mat4x4 *mat_proj, t_vec3d *coord)
 {
     t_vec3d *projected_coord;
 
-    // coord = define_vec3d_coord(coord, 1, 1, 100);
 	projected_coord = NULL;
     projected_coord = define_vec3d_coord(projected_coord, 0, 0, 0);
     multiply_matrix_vector(coord, projected_coord, mat_proj);
-	// free(coord);
+	free(coord);
     // scale into view
     projected_coord->x += 1.0;
     projected_coord->y += 1.0;

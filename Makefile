@@ -22,7 +22,7 @@ LIBC = ar -rc
 
 CFLAGS = -Wall -Wextra -Werror
 
-LIBFT = @printf "\n\t\t${B_CYAN}GENERATE libft library ...\n\n${NONE}" && cd libft && make bonus
+LIBFT = @printf "\n\t\t${B_CYAN}GENERATE libft library ...\n\n${NONE}" && cd libft && make bonus && make all
 
 # COLORS
 NONE			= \033[0m
@@ -42,8 +42,8 @@ all :
 
 ${NAME} : $(OBJ)
 	${LIBFT}
-	@${CC} -o ${NAME} -I /usr/local/include/mlx.h ${OBJ} ./libft/libft.a -L \
-	/usr/local/lib/ -lmlx -framework OpenGl -framework Appkit
+	@${CC} -o ${NAME} ${OBJ} libft/libft.a -L ./minilibx-linux -lmlx -lXext -lX11 \
+	-lm
 	@printf "${B_GREEN}==>{${NAME}} LINKED SUCCESFULLY<==${NONE}\n"
 
 clean :
