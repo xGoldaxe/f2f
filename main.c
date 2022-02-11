@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:51:33 by pleveque          #+#    #+#             */
-/*   Updated: 2022/02/03 17:49:21 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/02/11 11:21:43 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,42 @@
 
 static int	clean_exit_event(t_screen *screen_data);
 
+void	setup_hooks(t_screen *screen_data)
+{
+	mlx_hook(screen_data->win, 2, 1L << 0, on_press, screen_data);
+	mlx_hook(screen_data->win, 3, 1L << 1, on_release, screen_data);
+	mlx_hook(screen_data->win, 17, 1L << 16, clean_exit_event, screen_data);
+	mlx_mouse_hook(screen_data->win, mouse_hook, screen_data);
+	mlx_loop_hook(screen_data->mlx, render_next_frame, screen_data);
+	mlx_loop(screen_data->mlx);
+}
+
 int	main(int argc, char **argv)
 {
 	t_screen	screen_data;
 
 	(void)argc;
 	(void)argv;
+	screen_data.win = NULL;
+	screen_data.img_data.img = NULL;
+	screen_data.mat_rot_x = NULL;
+	screen_data.mat_rot_z = NULL;
+	screen_data.mat_proj = NULL;
 	screen_data.mlx = mlx_init();
+	if (!screen_data.mlx)
+		return (0);
 	screen_data.win = mlx_new_window(screen_data.mlx,
 			SCREEN_WIDTH, SCREEN_HEIGHT, "fdf");
 	screen_data.img_data.img = mlx_new_image(screen_data.mlx,
 			SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (default_options(&screen_data, argv[1]) == -1 || !screen_data.mlx
+		|| !screen_data.win || !screen_data.img_data.img)
+		clean_exit(&screen_data);
 	screen_data.img_data.addr = mlx_get_data_addr(screen_data.img_data.img,
 			&screen_data.img_data.bits_per_pixel,
 			&screen_data.img_data.line_length,
 			&screen_data.img_data.endian);
-	if (default_options(&screen_data, argv[1]) == -1 || !screen_data.mlx
-		|| !screen_data.win || !screen_data.img_data.img)
-		clean_exit(&screen_data);
-	mlx_hook(screen_data.win, 2, 1L << 0, on_press, &screen_data);
-	mlx_hook(screen_data.win, 3, 1L << 1, on_release, &screen_data);
-	mlx_hook(screen_data.win, 17, 1L << 16, clean_exit_event, &screen_data);
-	mlx_mouse_hook(screen_data.win, mouse_hook, &screen_data);
-	mlx_loop_hook(screen_data.mlx, render_next_frame, &screen_data);
-	mlx_loop(screen_data.mlx);
+	setup_hooks(&screen_data);
 	return (0);
 }
 
